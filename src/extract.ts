@@ -18,7 +18,7 @@ export function extractPorts(file: TextFile, source: PortSourceKind, owner: stri
     const port = Number(portText);
     if (!validPort(port)) return;
     const loc = lineAndColumn(file.text, matchIndex);
-    const key = `${port}:${loc.line}:${raw}`;
+    const key = `${port}:${loc.line}:${loc.column}`;
     if (seen.has(key)) return;
     seen.add(key);
     findings.push({

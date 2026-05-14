@@ -19,5 +19,5 @@ test('scan flags duplicate declared ports', async () => {
 
 test('scan reads compose fixture ports', async () => {
   const report = await scanProject({ root: fixture('compose'), live: false });
-  assert.deepEqual(report.findings.map((finding) => finding.port), [5432, 5432, 8025, 8025]);
+  assert.deepEqual(report.findings.map((finding) => finding.port), [5432, 8025]);
 });
