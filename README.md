@@ -15,7 +15,7 @@ For local development:
 ```sh
 npm install
 npm run build
-node dist/src/cli.js --help
+node dist/cli.js --help
 ```
 
 ## Quick start
