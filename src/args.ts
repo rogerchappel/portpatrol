@@ -4,7 +4,7 @@ export interface ParsedArgs {
   format: 'markdown' | 'json';
   out?: string;
   live: boolean;
-  failOn?: 'conflict' | 'warning' | 'none';
+  failOn: 'conflict' | 'warning' | 'none';
   range: string;
   count: number;
 }

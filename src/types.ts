@@ -11,7 +11,7 @@ export interface SourceLocation {
 export interface PortFinding {
   port: number;
   protocol: PortProtocol;
-  host?: string;
+  host?: string | undefined;
   owner: string;
   source: PortSourceKind;
   location: SourceLocation;
@@ -52,10 +52,10 @@ export interface ScanReport {
 
 export interface ListenerRecord {
   command: string;
-  pid?: number;
-  user?: string;
+  pid?: number | undefined;
+  user?: string | undefined;
   protocol: PortProtocol;
-  host?: string;
+  host?: string | undefined;
   port: number;
   raw: string;
 }
