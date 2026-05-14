@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "web": "next dev --port 3000",
+    "admin": "vite --port 3000",
+    "rooty": "serve --port 80"
+  }
+}

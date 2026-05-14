@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "api": "node server.js --port 4100"
+  }
+}
