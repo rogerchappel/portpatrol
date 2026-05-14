@@ -2,7 +2,7 @@ import { lineAndColumn, type TextFile } from './fs.js';
 import type { PortFinding, PortSourceKind } from './types.js';
 
 const URL_RE = /\bhttps?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[[^\]]+\]|[a-z0-9.-]+):(\d{2,5})\b/gi;
-const HOST_PORT_RE = /\b(localhost|127\.0\.0\.1|0\.0\.0\.0):(\d{2,5})\b/gi;
+const HOST_PORT_RE = /(?<!\/)\b(localhost|127\.0\.0\.1|0\.0\.0\.0):(\d{2,5})\b/gi;
 const FLAG_RE = /(?:--port|-p|PORT=|port[:=]\s*|listen\()\s*["']?(\d{2,5})\b/gi;
 const PORT_PAIR_RE = /["']?(\d{2,5}):(\d{2,5})["']?/g;
 
