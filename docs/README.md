@@ -1,13 +1,6 @@
-# portpatrol Documentation
+# PortPatrol docs
 
-This directory holds project documentation.
-
-## Contents
-
-- [Contributing guide](../CONTRIBUTING.md)
-- [Security policy](../SECURITY.md)
-- [Agent instructions](../AGENTS.md)
-
-## Additional docs
-
-For a hosted documentation site, see the `docs-site/` directory if present.
+- [PRD](PRD.md) captures the product scope.
+- [TASKS](TASKS.md) tracks the MVP implementation.
+- [ORCHESTRATION](ORCHESTRATION.md) explains human/agent workflows.
+- [orchestration.json](orchestration.json) provides a machine-readable command contract.
