@@ -1,4 +1,3 @@
 # Clean app
 
-Frontend: http://localhost:5173
-API: http://localhost:4100
+This fixture keeps package script ports unique and documented in prose for smoke tests.

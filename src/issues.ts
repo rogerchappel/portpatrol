@@ -33,8 +33,9 @@ export function detectIssues(findings: PortFinding[]): Issue[] {
   }
 
   for (const [port, matches] of byPort) {
-    const owners = new Set(matches.map((match) => `${match.source}:${match.owner}`));
-    if (owners.size > 1) {
+    const declaredMatches = matches.filter((match) => match.source !== 'live');
+    const uniqueLocations = new Set(declaredMatches.map((match) => `${match.location.file}:${match.location.line}:${match.raw}`));
+    if (uniqueLocations.size > 1) {
       issues.push({
         code: 'duplicate-port',
         severity: 'error',
