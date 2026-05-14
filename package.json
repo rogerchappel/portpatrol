@@ -4,14 +4,14 @@
   "description": "Map local development ports before your agents trip over them.",
   "type": "module",
   "bin": {
-    "portpatrol": "./dist/cli.js"
+    "portpatrol": "./dist/src/cli.js"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     }
   },
   "files": [
