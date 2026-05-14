@@ -1,0 +1,20 @@
+{
+  "name": "portpatrol",
+  "version": 1,
+  "purpose": "Map and suggest safe local development ports for humans and agents.",
+  "commands": {
+    "scanMarkdown": "portpatrol scan . --out docs/PORTS.md",
+    "scanJsonStrict": "portpatrol scan . --format json --fail-on conflict",
+    "suggest": "portpatrol suggest --range 3000-3999 --count 3"
+  },
+  "safety": {
+    "networkCalls": false,
+    "mutatesProject": false,
+    "killsProcesses": false,
+    "liveInspectionRequiresFlag": true
+  },
+  "handoffArtifacts": [
+    "docs/PORTS.md",
+    "portpatrol.json"
+  ]
+}
