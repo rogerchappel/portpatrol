@@ -28,7 +28,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
     if (arg === '--format') parsed.format = requireValue(args, ++index, '--format') as ParsedArgs['format'];
-    else if (arg === '--out') parsed.out = requireValue(args, ++index, '--out');
+    else if (arg === '--out') parsed.out = requireValue(args, ++index, '--out', true);
     else if (arg === '--live') parsed.live = true;
     else if (arg === '--fail-on') parsed.failOn = requireValue(args, ++index, '--fail-on') as ParsedArgs['failOn'];
     else if (arg === '--range') parsed.range = requireValue(args, ++index, '--range');
@@ -43,8 +43,8 @@ export function parseArgs(argv: string[]): ParsedArgs {
   return parsed;
 }
 
-function requireValue(args: string[], index: number, flag: string): string {
+function requireValue(args: string[], index: number, flag: string, allowStdout = false): string {
   const value = args[index];
-  if (!value || value.startsWith('-')) throw new Error(`${flag} requires a value`);
+  if (!value || (value.startsWith('-') && !(allowStdout && value === '-'))) throw new Error(`${flag} requires a value`);
   return value;
 }

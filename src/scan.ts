@@ -8,7 +8,7 @@ import type { ScanOptions, ScanReport, Severity } from './types.js';
 
 export async function scanProject(options: ScanOptions): Promise<ScanReport> {
   const root = path.resolve(options.root);
-  const files = await walkProject(root);
+  const files = await walkProject(root, options.exclude);
   const declared = scanFiles(files);
   const live = options.live ? await getLiveFindings() : [];
   const findings = [...declared, ...live].sort((a, b) => a.port - b.port || a.location.file.localeCompare(b.location.file));

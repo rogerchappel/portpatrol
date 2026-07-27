@@ -26,14 +26,16 @@ export async function readTextFile(absolutePath: string, root: string): Promise<
   };
 }
 
-export async function walkProject(root: string): Promise<TextFile[]> {
+export async function walkProject(root: string, exclude: string[] = []): Promise<TextFile[]> {
   const files: TextFile[] = [];
+  const excludedPaths = new Set(exclude.map((filePath) => path.resolve(root, filePath)));
 
   async function visit(directory: string): Promise<void> {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     for (const entry of entries) {
       if (DEFAULT_IGNORES.has(entry.name)) continue;
       const absolutePath = path.join(directory, entry.name);
+      if (excludedPaths.has(absolutePath)) continue;
       if (entry.isDirectory()) {
         await visit(absolutePath);
         continue;
