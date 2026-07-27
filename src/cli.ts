@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import path from 'node:path';
 import { parseArgs } from './args.js';
 import { toJson, toMarkdown } from './report.js';
 import { scanProject, writeOutput } from './scan.js';
@@ -33,7 +34,11 @@ export async function main(argv = process.argv.slice(2)): Promise<number> {
       return ports.length === args.count ? 0 : 2;
     }
 
-    const report = await scanProject({ root: args.target, live: args.live });
+    const report = await scanProject({
+      root: args.target,
+      live: args.live,
+      exclude: args.out && args.out !== '-' ? [path.resolve(args.out)] : []
+    });
     await writeOutput(args.out, args.format === 'json' ? toJson(report) : toMarkdown(report));
 
     if (args.failOn === 'conflict' && report.issues.some((issue) => issue.severity === 'error')) return 1;
