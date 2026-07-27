@@ -34,6 +34,11 @@ Write a Markdown map:
 portpatrol scan . --out docs/PORTS.md
 ```
 
+The explicit `--out` file is excluded from that scan, so regenerating an
+in-tree Markdown or JSON report does not treat the previous report as project
+configuration. Other documentation and configuration files are still scanned.
+Use `--out -` (or omit `--out`) to write the report to standard output.
+
 Use strict JSON in CI:
 
 ```sh
