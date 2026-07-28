@@ -6,16 +6,25 @@ Map local dev ports before your agents trip over mystery servers. 🚦
 
 ## Install
 
+PortPatrol is currently distributed from this repository. Install the latest
+supported source revision with:
+
 ```sh
-npm install -g portpatrol
+git clone https://github.com/rogerchappel/portpatrol.git
+cd portpatrol
+npm ci
+npm run build
+npm install -g .
+portpatrol --version
 ```
 
-For local development:
+When a versioned GitHub release is available, its attached npm tarball can be
+installed without using the npm registry:
 
 ```sh
-npm install
-npm run build
-node dist/cli.js --help
+gh release download --repo rogerchappel/portpatrol --pattern 'portpatrol-*.tgz'
+npm install -g ./portpatrol-*.tgz
+portpatrol --help
 ```
 
 ## Quick start
@@ -123,7 +132,9 @@ npm run package:smoke
 npm run release:check
 ```
 
-The package smoke uses `npm pack --dry-run` so the published file list can be reviewed without publishing.
+The package smoke builds and packs the project, installs the resulting tarball
+into an isolated temporary prefix, verifies its package name and version, and
+runs `portpatrol --help` and `portpatrol --version`. It does not publish.
 
 ## Development
 

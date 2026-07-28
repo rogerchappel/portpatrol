@@ -22,7 +22,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
     count: 1
   };
 
-  const args = command === 'help' || command === 'version' ? argv : rest;
+  const args = command === 'help' ? argv : command === 'version' ? [] : rest;
   if (command === 'scan' && args[0] && !args[0].startsWith('-')) parsed.target = String(args.shift());
 
   for (let index = 0; index < args.length; index += 1) {
