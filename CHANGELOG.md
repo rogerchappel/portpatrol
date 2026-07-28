@@ -10,6 +10,14 @@ format and uses semantic versioning when versioned releases are published.
 ### Added
 
 - Initial project setup.
+- Packed-artifact verification for package identity, global installation, and
+  CLI help/version execution before a release.
+
+### Changed
+
+- Installation documentation now reflects the repository and GitHub release
+  artifacts that actually distribute PortPatrol; the package is not published
+  to the npm registry.
 
 ## Release Links
 
