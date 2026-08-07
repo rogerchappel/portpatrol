@@ -15,6 +15,8 @@ format and uses semantic versioning when versioned releases are published.
 
 ### Changed
 
+- Updated the TypeScript execution toolchain to remove the deprecated Node loader
+  path and resolve its development dependency audit warning.
 - Installation documentation now reflects the repository and GitHub release
   artifacts that actually distribute PortPatrol; the package is not published
   to the npm registry.
