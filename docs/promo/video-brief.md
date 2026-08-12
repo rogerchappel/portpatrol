@@ -33,7 +33,7 @@
 - `docs/promo/social-hooks.md` — social post drafts (new)
 
 ## Call to action
-- "npm install -g portpatrol"
+- Show the current source install: `git clone`, `npm ci`, `npm run build`, then `npm install -g .`
 - Run it before your next CI session
 - PRs welcome — especially new scanner patterns
 

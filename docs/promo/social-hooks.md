@@ -12,7 +12,8 @@ EADDRINUSE. 😤
 
 PortPatrol maps all declared ports in your project before agents trip over them.
 
-npm install -g portpatrol
+git clone https://github.com/rogerchappel/portpatrol.git && cd portpatrol
+npm ci && npm run build && npm install -g .
 portpatrol scan .
 ```
 
@@ -51,7 +52,8 @@ No network calls. No process killing. Just a clear report of what ports are decl
 
 Run it before your CI session. Attach the map to your handoff.
 
-npm install -g portpatrol
+git clone https://github.com/rogerchappel/portpatrol.git && cd portpatrol
+npm ci && npm run build && npm install -g .
 portpatrol scan .
 
 Open source: https://github.com/rogerchappel/portpatrol
