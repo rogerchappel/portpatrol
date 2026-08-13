@@ -25,6 +25,25 @@ test('scan reads compose fixture ports', async () => {
   assert.deepEqual(report.findings.map((finding) => finding.port), [5432, 8025]);
 });
 
+test('package script findings retain their original source locations', async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'portpatrol-package-location-'));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.writeFile(path.join(root, 'package.json'), [
+    '{',
+    '  "scripts": {',
+    '    "lint": "eslint .",',
+    '    "dev": "vite --port 4310"',
+    '  }',
+    '}'
+  ].join('\n'));
+
+  const report = await scanProject({ root, live: false });
+
+  assert.equal(report.findings[0]?.location.line, 4);
+  assert.equal(report.findings[0]?.location.column, 18);
+  assert.match(report.findings[0]?.raw ?? '', /^script dev:/);
+});
+
 for (const format of ['markdown', 'json'] as const) {
   test(`scan excludes its explicit ${format} report output on repeated runs`, async (t) => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'portpatrol-scan-'));

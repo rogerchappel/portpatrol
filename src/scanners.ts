@@ -26,11 +26,20 @@ function scanPackageJson(file: TextFile): PortFinding[] {
   try {
     const pkg = JSON.parse(file.text) as { scripts?: Record<string, string> };
     const scripts = pkg.scripts ?? {};
-    const virtual = Object.entries(scripts)
-      .map(([name, command]) => `"${name}": "${command}"`)
-      .join('\n');
-    return extractPorts({ ...file, text: virtual }, 'package-script', 'package scripts')
-      .map((finding) => ({ ...finding, raw: `script ${finding.raw}` }));
+    let searchFrom = 0;
+    return Object.entries(scripts).flatMap(([name, command]) => {
+      const key = JSON.stringify(name);
+      const value = JSON.stringify(command);
+      const keyIndex = file.text.indexOf(key, searchFrom);
+      const valueIndex = keyIndex < 0 ? -1 : file.text.indexOf(value, keyIndex + key.length);
+      if (valueIndex < 0) return [];
+      searchFrom = valueIndex + value.length;
+
+      const masked = file.text.replace(/[^\r\n]/g, ' ').split('');
+      masked.splice(valueIndex, value.length, ...value);
+      return extractPorts({ ...file, text: masked.join('') }, 'package-script', 'package scripts')
+        .map((finding) => ({ ...finding, raw: `script ${name}: ${finding.raw}` }));
+    });
   } catch {
     return extractPorts(file, 'package-script', 'package scripts');
   }
