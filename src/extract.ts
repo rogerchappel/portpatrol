@@ -33,10 +33,15 @@ export function extractPorts(file: TextFile, source: PortSourceKind, owner: stri
     });
   }
 
-  for (const regex of [URL_RE, HOST_PORT_RE, FLAG_RE, PORT_PAIR_RE]) {
+  const patterns = source === 'compose'
+    ? [URL_RE, HOST_PORT_RE, FLAG_RE, PORT_PAIR_RE]
+    : [URL_RE, HOST_PORT_RE, FLAG_RE];
+
+  for (const regex of patterns) {
     regex.lastIndex = 0;
     let match: RegExpExecArray | null;
     while ((match = regex.exec(file.text)) !== null) {
+      if (regex === PORT_PAIR_RE && Number(match[1]) <= 23 && Number(match[2]) <= 59) continue;
       const portText = regex === PORT_PAIR_RE ? match[1] : match[2] ?? match[1];
       const host = regex !== PORT_PAIR_RE && match[2] ? match[1] : undefined;
       if (portText) add(match.index, match[0], portText, host);
