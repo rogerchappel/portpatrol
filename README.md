@@ -68,6 +68,9 @@ portpatrol suggest --range 3000-3999 --count 3
 
 ## What it checks
 
+Docker Compose scanning supports short port pairs and long-syntax `published`
+host ports, including numeric and quoted YAML values.
+
 - duplicate declarations across files
 - declared ports already listening when `--live` is used
 - privileged ports below `1024`
