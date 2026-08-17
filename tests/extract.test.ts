@@ -12,6 +12,23 @@ test('ignores invalid port numbers', () => {
   assert.deepEqual(findings.map((finding) => finding.port), [7000]);
 });
 
+test('extracts published ports from compose long syntax', () => {
+  const text = `ports:
+    - target: 3000
+      published: 4310
+    - target: 3001
+      published: "4311"
+    - target: 3002
+      published: '08:30'`;
+  const findings = extractPorts({ absolutePath: 'x', relativePath: 'compose.yml', text }, 'compose', 'docker compose');
+  assert.deepEqual(findings.map((finding) => finding.port), [4310, 4311]);
+});
+
+test('does not treat compose published fields as ports in other sources', () => {
+  const findings = extractPorts({ absolutePath: 'x', relativePath: 'notes.md', text: 'published: 4310' }, 'docs', 'docs');
+  assert.deepEqual(findings, []);
+});
+
 test('extracts compose port pairs without treating clock times as ports', () => {
   const text = 'meeting: "09:30"\nports:\n  - "4310:3000"\n';
   const findings = extractPorts({ absolutePath: 'x', relativePath: 'compose.yml', text }, 'compose', 'docker compose');

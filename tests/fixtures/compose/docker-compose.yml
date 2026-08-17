@@ -7,3 +7,15 @@ services:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
+  web:
+    image: example/web
+    ports:
+      - target: 3000
+        published: 4310
+        protocol: tcp
+  admin:
+    image: example/admin
+    ports:
+      - target: 3001
+        published: "4311"
+        protocol: tcp

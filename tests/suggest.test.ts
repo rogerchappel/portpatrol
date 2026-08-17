@@ -11,3 +11,8 @@ test('suggest skips ports found in fixtures', async () => {
   const ports = await suggestPorts({ root: path.join(process.cwd(), 'tests/fixtures/clean'), range: '4099-4101', count: 2, live: false });
   assert.deepEqual(ports, [4099, 4101]);
 });
+
+test('suggest skips published compose long-syntax ports', async () => {
+  const ports = await suggestPorts({ root: path.join(process.cwd(), 'tests/fixtures/compose'), range: '4309-4312', count: 2, live: false });
+  assert.deepEqual(ports, [4309, 4312]);
+});
