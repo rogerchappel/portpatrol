@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "proxy": "proxy --port 4310"
+  }
+}

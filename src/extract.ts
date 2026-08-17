@@ -5,6 +5,7 @@ const URL_RE = /\bhttps?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[[^\]]+\]|[a-z0
 const HOST_PORT_RE = /(?<!\/)\b(localhost|127\.0\.0\.1|0\.0\.0\.0):(\d{2,5})\b/gi;
 const FLAG_RE = /(?:--port|-p|PORT=|port[:=]\s*|listen\()\s*["']?(\d{2,5})\b/gi;
 const PORT_PAIR_RE = /["']?(\d{2,5}):(\d{2,5})["']?/g;
+const COMPOSE_PUBLISHED_RE = /["']?published["']?\s*:\s*["']?(\d{1,5})\b(?!:)["']?/gi;
 
 export function validPort(port: number): boolean {
   return Number.isInteger(port) && port > 0 && port <= 65535;
@@ -45,6 +46,14 @@ export function extractPorts(file: TextFile, source: PortSourceKind, owner: stri
       const portText = regex === PORT_PAIR_RE ? match[1] : match[2] ?? match[1];
       const host = regex !== PORT_PAIR_RE && match[2] ? match[1] : undefined;
       if (portText) add(match.index, match[0], portText, host);
+    }
+  }
+
+  if (source === 'compose') {
+    COMPOSE_PUBLISHED_RE.lastIndex = 0;
+    let match: RegExpExecArray | null;
+    while ((match = COMPOSE_PUBLISHED_RE.exec(file.text)) !== null) {
+      if (match[1]) add(match.index, match[0], match[1]);
     }
   }
 
