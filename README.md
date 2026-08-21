@@ -69,7 +69,9 @@ portpatrol suggest --range 3000-3999 --count 3
 ## What it checks
 
 Docker Compose scanning supports short port pairs and long-syntax `published`
-host ports, including numeric and quoted YAML values.
+host ports, including numeric and quoted YAML values. Matching ranges such as
+`"4310-4312:3000-3002"` expand to host ports 4310, 4311, and 4312; malformed
+or unequal-length ranges are ignored rather than partially reported.
 
 - duplicate declarations across files
 - declared ports already listening when `--live` is used
