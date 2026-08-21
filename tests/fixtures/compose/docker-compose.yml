@@ -19,3 +19,17 @@ services:
       - target: 3001
         published: "4311"
         protocol: tcp
+  ranged:
+    image: example/ranged
+    ports:
+      - "4320-4322:3020-3022"
+      - 4330-4332:3030-3032
+      - target: 3040-3042
+        published: '4340-4342'
+  malformed-ranges:
+    image: example/malformed
+    ports:
+      - "4400-4402:4000-4001"
+      - "4500-:4100"
+      - target: 4200
+        published: "4600-"

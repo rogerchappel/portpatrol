@@ -36,6 +36,32 @@ test('extracts compose port pairs without treating clock times as ports', () => 
   assert.deepEqual(findings.map((finding) => finding.port), [4310]);
 });
 
+test('expands quoted and unquoted compose port ranges', () => {
+  const text = `ports:
+  - "4310-4312:3000-3002"
+  - 4320-4322:3020-3022
+  - target: 4000-4002
+    published: '4330-4332'`;
+  const findings = extractPorts({ absolutePath: 'x', relativePath: 'compose.yml', text }, 'compose', 'docker compose');
+
+  assert.deepEqual(findings.map(({ port }) => port), [4310, 4311, 4312, 4320, 4321, 4322, 4330, 4331, 4332]);
+  assert.deepEqual(findings.slice(0, 3).map(({ raw }) => raw), Array(3).fill('"4310-4312:3000-3002"'));
+  assert.deepEqual(findings.slice(0, 3).map(({ location }) => location), Array(3).fill({ file: 'compose.yml', line: 2, column: 5 }));
+});
+
+test('rejects malformed and mismatched compose ranges without partial findings', () => {
+  const text = `ports:
+  - "4310-4312:3000-3001"
+  - "4400-:4000"
+  - target: 5000
+    published: "4500-"
+  - target: 5001
+    published: 4600-4599`;
+  const findings = extractPorts({ absolutePath: 'x', relativePath: 'compose.yml', text }, 'compose', 'docker compose');
+
+  assert.deepEqual(findings, []);
+});
+
 test('does not treat clock times in general configuration as port pairs', () => {
   const text = '{ "meeting": "09:30", "endpoint": "http://localhost:4310" }';
   const findings = extractPorts({ absolutePath: 'x', relativePath: 'settings.json', text }, 'config', 'config');
