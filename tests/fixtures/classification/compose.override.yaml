@@ -1,0 +1,4 @@
+services:
+  web:
+    ports:
+      - "4100:80"
