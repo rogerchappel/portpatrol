@@ -7,7 +7,7 @@ export function classifySource(file: TextFile): { source: PortSourceKind; owner:
   const base = path.basename(file.relativePath).toLowerCase();
   if (base === 'package.json') return { source: 'package-script', owner: 'package scripts' };
   if (base.startsWith('.env')) return { source: 'env', owner: base };
-  if (/docker-compose|compose\.(ya?ml|json)/i.test(file.relativePath)) return { source: 'compose', owner: 'docker compose' };
+  if (/^(?:docker-)?compose(?:\.override)?\.(?:ya?ml|json)$/i.test(base)) return { source: 'compose', owner: 'docker compose' };
   if (/\.(md|mdx|txt)$/i.test(file.relativePath)) return { source: 'docs', owner: 'documentation' };
   if (/\.(ya?ml|json|toml|ini|conf|config|js|ts|mjs|cjs)$/i.test(file.relativePath)) return { source: 'config', owner: 'config' };
   return undefined;
