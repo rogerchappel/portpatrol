@@ -5,6 +5,7 @@ import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import { scanProject } from '../src/scan.js';
 import { toJson, toMarkdown } from '../src/report.js';
+import { classifySource } from '../src/scanners.js';
 
 const fixture = (name: string) => path.join(process.cwd(), 'tests/fixtures', name);
 
@@ -35,6 +36,25 @@ test('scan distinguishes Compose override files from similarly named documentati
     { port: 4100, source: 'compose', confidence: 'high' },
     { port: 4300, source: 'docs', confidence: 'medium' }
   ]);
+});
+
+test('classifies standard Compose YAML filename variants by basename', () => {
+  for (const relativePath of [
+    'compose.yaml',
+    'compose.yml',
+    'compose.override.yaml',
+    'compose.override.yml',
+    'nested/docker-compose.yaml',
+    'nested/docker-compose.yml',
+    'nested/docker-compose.override.yaml',
+    'nested/docker-compose.override.yml'
+  ]) {
+    assert.equal(classifySource({ absolutePath: relativePath, relativePath, text: '' })?.source, 'compose');
+  }
+
+  for (const relativePath of ['docs/docker-compose-guide.md', 'docker-compose-notes.txt', 'my-docker-compose.yaml']) {
+    assert.notEqual(classifySource({ absolutePath: relativePath, relativePath, text: '' })?.source, 'compose');
+  }
 });
 
 test('package script findings retain their original source locations', async (t) => {
