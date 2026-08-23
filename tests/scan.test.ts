@@ -28,6 +28,15 @@ test('scan reads compose fixture ports', async () => {
   assert.ok(report.issues.some((issue) => issue.code === 'duplicate-port' && issue.port === 4310));
 });
 
+test('scan distinguishes Compose override files from similarly named documentation', async () => {
+  const report = await scanProject({ root: fixture('classification'), live: false });
+
+  assert.deepEqual(report.findings.map(({ port, source, confidence }) => ({ port, source, confidence })), [
+    { port: 4100, source: 'compose', confidence: 'high' },
+    { port: 4300, source: 'docs', confidence: 'medium' }
+  ]);
+});
+
 test('package script findings retain their original source locations', async (t) => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'portpatrol-package-location-'));
   t.after(() => fs.rm(root, { recursive: true, force: true }));
