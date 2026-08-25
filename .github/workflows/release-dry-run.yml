@@ -42,7 +42,9 @@ jobs:
       - name: Run release checks
         run: npm run release:check
       - name: Exercise release artifact contract
-        run: bash scripts/prepare-release-artifact.sh "v$(node -p \"require('./package.json').version\")"
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          bash scripts/prepare-release-artifact.sh "v${package_version}"
       - name: Release notes preview
         run: |
           node /tmp/releasebox/bin/releasebox.js notes . > release-notes-preview.md
