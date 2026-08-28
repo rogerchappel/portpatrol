@@ -31,9 +31,20 @@ portpatrol --help
 
 ```sh
 portpatrol scan . --out docs/PORTS.md
-portpatrol scan fixtures/conflict --format json --fail-on conflict
 portpatrol suggest --range 3000-3999 --count 3
 ```
+
+To try conflict policy handling without a repository checkout, create a small
+example project with two scripts that declare the same port:
+
+```sh
+mkdir portpatrol-conflict && cd portpatrol-conflict
+printf '%s\n' '{"scripts":{"web":"vite --port 3000","api":"node server.js --port 3000"}}' > package.json
+portpatrol scan . --format json --fail-on conflict
+```
+
+The final command reports the duplicate port as a conflict and exits with
+status `1`, which is suitable for enforcing the policy in CI.
 
 ## Examples
 
