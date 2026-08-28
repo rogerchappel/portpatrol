@@ -15,7 +15,7 @@ Usage:
 
 Examples:
   portpatrol scan . --out docs/PORTS.md
-  portpatrol scan fixtures/conflict --format json --fail-on conflict
+  portpatrol scan . --format json --fail-on conflict
   portpatrol suggest --range 3000-3999 --count 3
 `;
 

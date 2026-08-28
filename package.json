@@ -28,9 +28,10 @@
     "build": "tsc",
     "test": "node --test --import tsx tests/**/*.test.ts",
     "docs:check": "node scripts/check-doc-installs.mjs",
+    "docs:quick-start": "node scripts/check-quick-start.mjs",
     "smoke": "npm run build && bash scripts/smoke.sh",
     "package:smoke": "bash scripts/package-smoke.sh",
-    "release:check": "npm run docs:check && npm run check && npm test && npm run build && npm run smoke && npm run package:smoke"
+    "release:check": "npm run docs:check && npm run docs:quick-start && npm run check && npm test && npm run build && npm run smoke && npm run package:smoke"
   },
   "keywords": [
     "ports",
