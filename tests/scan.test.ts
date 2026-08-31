@@ -99,8 +99,8 @@ test('package scripts support quoted port arguments without losing source locati
     line: location.line,
     column: location.column
   })), [
-    { port: 3000, raw: 'script double: --port \\"3000', line: 3, column: 23 },
-    { port: 4100, raw: "script single: -p '4100", line: 4, column: 23 },
+    { port: 3000, raw: 'script double: --port \\"3000', line: 3, column: 21 },
+    { port: 4100, raw: "script single: -p '4100", line: 4, column: 21 },
     { port: 4200, raw: 'script env: PORT=\\"4200', line: 5, column: 13 }
   ]);
 });
