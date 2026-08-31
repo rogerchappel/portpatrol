@@ -3,7 +3,7 @@ import type { PortFinding, PortSourceKind } from './types.js';
 
 const URL_RE = /\bhttps?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[[^\]]+\]|[a-z0-9.-]+):(\d{2,5})\b/gi;
 const HOST_PORT_RE = /(?<!\/)\b(localhost|127\.0\.0\.1|0\.0\.0\.0):(\d{2,5})\b/gi;
-const FLAG_RE = /(?:--port|-p|PORT=|port[:=]\s*|listen\()\s*["']?(\d{2,5})\b/gi;
+const FLAG_RE = /(?:--port|-p|PORT=|port[:=]\s*|listen\()\s*\\?["']?(\d{2,5})\b/gi;
 const PORT_PAIR_RE = /(["']?)(\d{1,5}(?:-\d{1,5})?):(\d{1,5}(?:-\d{1,5})?)\1(?![\d:-])/g;
 const COMPOSE_PUBLISHED_RE = /["']?published["']?\s*:\s*(["']?)(\d{1,5}(?:-\d{1,5})?)\1(?![\d:-])/gi;
 

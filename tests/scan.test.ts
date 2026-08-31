@@ -76,6 +76,35 @@ test('package script findings retain their original source locations', async (t)
   assert.match(report.findings[0]?.raw ?? '', /^script dev:/);
 });
 
+test('package scripts support quoted port arguments without losing source locations', async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'portpatrol-package-quotes-'));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.writeFile(path.join(root, 'package.json'), [
+    '{',
+    '  "scripts": {',
+    '    "double": "vite --port \\"3000\\"",',
+    '    "single": "vite -p \'4100\'",',
+    '    "env": "PORT=\\"4200\\" node server.js",',
+    '    "invalid": "vite --port \\"70000\\""',
+    '  }',
+    '}',
+    ''
+  ].join('\n'));
+
+  const report = await scanProject({ root, live: false });
+
+  assert.deepEqual(report.findings.map(({ port, raw, location }) => ({
+    port,
+    raw,
+    line: location.line,
+    column: location.column
+  })), [
+    { port: 3000, raw: 'script double: --port \\"3000', line: 3, column: 21 },
+    { port: 4100, raw: "script single: -p '4100", line: 4, column: 21 },
+    { port: 4200, raw: 'script env: PORT=\\"4200', line: 5, column: 13 }
+  ]);
+});
+
 for (const format of ['markdown', 'json'] as const) {
   test(`scan excludes its explicit ${format} report output on repeated runs`, async (t) => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'portpatrol-scan-'));
