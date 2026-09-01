@@ -102,6 +102,7 @@ PortPatrol is local-first and boring on purpose:
 - no process killing
 - no file mutation except explicit report output
 - live listener inspection only with `--live`
+- malformed live listener rows and ports outside `1..65535` are ignored
 - deterministic timestamps in reports for stable diffs
 
 If it looks dangerous, PortPatrol points and barks; it does not bite.
