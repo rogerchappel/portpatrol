@@ -1,5 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { validPort } from './extract.js';
 import type { ListenerRecord, PortFinding } from './types.js';
 
 const execFileAsync = promisify(execFile);
@@ -13,16 +14,17 @@ export function parseLsof(output: string): ListenerRecord[] {
     const pid = Number(parts[1]);
     const user = parts[2];
     const name = parts.slice(8).join(' ');
-    const portMatch = name.match(/(?:\*|\[?[^:\]]+\]?):(\d{1,5})(?:\s|$)/);
-    if (!portMatch) return [];
-    const hostMatch = name.match(/(\*|\[?[^:\]]+\]?):\d{1,5}/);
+    const endpointMatch = name.match(/(\*|\[[^\]]+\]|[^:\s]+):(\d{1,5})(?:\s|$)/);
+    if (!endpointMatch) return [];
+    const port = Number(endpointMatch[2]);
+    if (!validPort(port)) return [];
     return [{
       command,
       pid: Number.isFinite(pid) ? pid : undefined,
       user,
       protocol: 'tcp' as const,
-      host: hostMatch?.[1] === '*' ? '0.0.0.0' : hostMatch?.[1],
-      port: Number(portMatch[1]),
+      host: endpointMatch[1] === '*' ? '0.0.0.0' : endpointMatch[1],
+      port,
       raw: line
     }];
   });
@@ -34,7 +36,9 @@ export function parseSs(output: string): ListenerRecord[] {
     if (!local) return [];
     const match = local.match(/(.+):(\d{1,5})$/);
     if (!match) return [];
-    return [{ command: 'ss', protocol: 'tcp' as const, host: match[1], port: Number(match[2]), raw: line }];
+    const port = Number(match[2]);
+    if (!validPort(port)) return [];
+    return [{ command: 'ss', protocol: 'tcp' as const, host: match[1], port, raw: line }];
   });
 }
 

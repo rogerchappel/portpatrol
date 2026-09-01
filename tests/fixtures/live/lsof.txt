@@ -1,3 +1,7 @@
 COMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 node     1234 roger   21u  IPv4 0xabc      0t0  TCP 127.0.0.1:3000 (LISTEN)
 python   4321 roger    4u  IPv6 0xdef      0t0  TCP *:8000 (LISTEN)
+node     5678 roger   22u  IPv6 0xghi      0t0  TCP [::1]:65535 (LISTEN)
+node     5679 roger   23u  IPv4 0xjkl      0t0  TCP 127.0.0.1:0 (LISTEN)
+node     5680 roger   24u  IPv4 0xmno      0t0  TCP 127.0.0.1:65536 (LISTEN)
+node     5681 roger   25u  IPv4 0xpqr      0t0  TCP 127.0.0.1:99999 (LISTEN)
