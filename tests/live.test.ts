@@ -6,11 +6,14 @@ import { parseLsof, parseSs } from '../src/live.js';
 test('parses lsof listener output', () => {
   const output = readFileSync('tests/fixtures/live/lsof.txt', 'utf8');
   const records = parseLsof(output);
-  assert.deepEqual(records.map((record) => record.port), [3000, 8000]);
+  assert.deepEqual(records.map((record) => record.port), [3000, 8000, 65535]);
   assert.equal(records[1]?.host, '0.0.0.0');
+  assert.equal(records[2]?.host, '[::1]');
 });
 
 test('parses ss listener output', () => {
-  const records = parseSs('State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 127.0.0.1:9229 0.0.0.0:* users:(("node",pid=1,fd=2))\n');
-  assert.equal(records[0]?.port, 9229);
+  const output = readFileSync('tests/fixtures/live/ss.txt', 'utf8');
+  const records = parseSs(output);
+  assert.deepEqual(records.map((record) => record.port), [9229, 65535]);
+  assert.deepEqual(records.map((record) => record.host), ['127.0.0.1', '[::]']);
 });
