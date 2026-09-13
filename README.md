@@ -2,7 +2,7 @@
 
 Map local dev ports before your agents trip over mystery servers. 🚦
 
-`portpatrol` scans a project for ports declared in package scripts, `.env*`, Docker Compose, docs, and config files. It can also inspect live TCP listeners on demand, then emits deterministic Markdown or JSON for handoffs and CI.
+`portpatrol` scans a project for ports declared in package scripts, `.env*`, Docker Compose, docs, and config files. It can also inspect live TCP listeners on demand, then emits deterministically ordered Markdown or JSON for handoffs and CI.
 
 ## Install
 
@@ -103,7 +103,7 @@ PortPatrol is local-first and boring on purpose:
 - no file mutation except explicit report output
 - live listener inspection only with `--live`
 - malformed live listener rows and ports outside `1..65535` are ignored
-- deterministic timestamps in reports for stable diffs
+- deterministically ordered findings for stable diffs, with timestamps that reflect when the scan ran
 
 If it looks dangerous, PortPatrol points and barks; it does not bite.
 
