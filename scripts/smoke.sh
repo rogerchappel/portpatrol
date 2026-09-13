@@ -10,6 +10,11 @@ mkdir -p tmp/smoke
 node dist/cli.js scan tests/fixtures/clean --out tmp/smoke/PORTS.md
 test -s tmp/smoke/PORTS.md
 grep -q "5173" tmp/smoke/PORTS.md
+grep -Eq "^Generated: [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:" tmp/smoke/PORTS.md
+if grep -q "1970-01-01T00:00:00" tmp/smoke/PORTS.md; then
+  echo "expected report timestamps to reflect actual execution time, not the epoch placeholder" >&2
+  exit 1
+fi
 
 node dist/cli.js scan tests/fixtures/conflict --format json --out tmp/smoke/conflict.json || true
 grep -q '"duplicate-port"' tmp/smoke/conflict.json
