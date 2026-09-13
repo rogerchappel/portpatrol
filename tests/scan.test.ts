@@ -132,3 +132,14 @@ test('scan still reads ordinary user-authored reports without an exclusion', asy
 
   assert.deepEqual(report.findings.map((finding) => finding.port), [4200]);
 });
+
+test('scan stamps reports with actual execution time', async () => {
+  const before = Date.now();
+  const report = await scanProject({ root: fixture('clean'), live: false });
+  const generatedAt = Date.parse(report.generatedAt);
+
+  assert.ok(Number.isFinite(generatedAt), `generatedAt must be an ISO timestamp, got ${report.generatedAt}`);
+  assert.notEqual(report.generatedAt, new Date(0).toISOString(), 'generatedAt must not be the epoch placeholder');
+  assert.ok(generatedAt >= before, `generatedAt ${report.generatedAt} precedes the scan start`);
+  assert.ok(Date.now() - generatedAt < 60_000, `generatedAt ${report.generatedAt} is not within 60s of report creation`);
+});
