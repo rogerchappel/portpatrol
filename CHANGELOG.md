@@ -10,6 +10,10 @@ format and uses semantic versioning when versioned releases are published.
 ### Added
 
 - Initial project setup.
+
+### Fixed
+
+- Scan reports now carry the actual execution time in `generatedAt` instead of a hardcoded 1970-01-01 epoch placeholder.
 - Packed-artifact verification for package identity, global installation, and
   CLI help/version execution before a release.
 
