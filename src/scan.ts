@@ -18,7 +18,7 @@ export async function scanProject(options: ScanOptions): Promise<ScanReport> {
     tool: 'portpatrol',
     version: '0.1.0',
     root,
-    generatedAt: new Date(0).toISOString(),
+    generatedAt: new Date().toISOString(),
     findings,
     issues,
     summary: {
