@@ -1,0 +1,8 @@
+State  Recv-Q Send-Q Local Address:Port  Peer Address:Port Process
+LISTEN 0      128 [::1]:3000       [::]:*    users:(("node",pid=3,fd=4))
+LISTEN 0      128 [::ffff:127.0.0.1]:4000 [::]:* users:(("node",pid=4,fd=5))
+LISTEN 0      128 [2001:db8::1]:5000 [::]:* users:(("node",pid=5,fd=6))
+LISTEN 0      128 [fe80::1%lo]:6000 [::]:* users:(("node",pid=6,fd=7))
+LISTEN 0      128 [::1]:0 [::]:*
+LISTEN 0      128 [::1]:65536 [::]:*
+LISTEN 0      128 [2001:db8::zz]:7000 [::]:*

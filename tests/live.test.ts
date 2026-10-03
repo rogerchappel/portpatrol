@@ -17,3 +17,14 @@ test('parses ss listener output', () => {
   assert.deepEqual(records.map((record) => record.port), [9229, 65535]);
   assert.deepEqual(records.map((record) => record.host), ['127.0.0.1', '[::]']);
 });
+
+test('parses bracketed ss IPv6 local endpoints and rejects malformed ones', () => {
+  const output = readFileSync('tests/fixtures/live/ss-ipv6.txt', 'utf8');
+  const records = parseSs(output);
+  assert.deepEqual(records.map(({ host, port }) => ({ host, port })), [
+    { host: '[::1]', port: 3000 },
+    { host: '[::ffff:127.0.0.1]', port: 4000 },
+    { host: '[2001:db8::1]', port: 5000 },
+    { host: '[fe80::1%lo]', port: 6000 }
+  ]);
+});
