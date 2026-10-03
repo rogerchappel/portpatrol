@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process';
+import { isIP } from 'node:net';
 import { promisify } from 'node:util';
 import { validPort } from './extract.js';
 import type { ListenerRecord, PortFinding } from './types.js';
@@ -34,12 +35,20 @@ export function parseSs(output: string): ListenerRecord[] {
   return output.split(/\r?\n/).slice(1).flatMap((line) => {
     const local = line.trim().split(/\s+/)[3];
     if (!local) return [];
-    const match = local.match(/(.+):(\d{1,5})$/);
+    // `ss -ltnp` brackets IPv6 endpoints, including mapped and scoped forms.
+    const match = local.match(/^(\[[^\]]+\]|[^:]+):(\d{1,5})$/);
     if (!match) return [];
     const port = Number(match[2]);
     if (!validPort(port)) return [];
-    return [{ command: 'ss', protocol: 'tcp' as const, host: match[1], port, raw: line }];
+    const host = match[1];
+    if (!host || (host.startsWith('[') && !isValidIpv6Literal(host.slice(1, -1)))) return [];
+    return [{ command: 'ss', protocol: 'tcp' as const, host, port, raw: line }];
   });
+}
+
+function isValidIpv6Literal(literal: string): boolean {
+  const address = literal.split('%', 1)[0];
+  return Boolean(address && address.includes(':') && isIP(address) === 6);
 }
 
 export async function getLiveFindings(): Promise<PortFinding[]> {
